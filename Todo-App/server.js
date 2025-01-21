@@ -1,8 +1,11 @@
 import express, { request, response } from "express";
 import cors from "cors";
+import './database.js'
+import {Todo} from './model/index.js';
+
+
 const app = express();
 const port = process.env.PORT || 5001;
-const todos = [];
 
 
 app.use(express.json()); // to convert body into json (body = post man body jis ma sare encrypted data hota ha)
@@ -11,18 +14,31 @@ app.use(
 );
 
 // yah api sa todo ko lena ka lia ha
-app.get("/all-todos", (request, response) => {
+app.get("/all-todos", async(request, response) => {
+  try {
+    
+
+  const todos = await Todo.find({},
+    {todoContent : 1, _id: 0 }
+    //  {ip: 0, __v : 0,  updatedAt: 0} yah 0, 1 is liya hota ha ka 0 sa  fronted par kuch bhi show nahi karta ha. or 1 sa show jo show karwana ho
+    )
   const message = !todos.length ? "todos empty" : "todo is here";
   response.send({ data: todos, message: "yah han sab todos" });
-});
+} catch (error) {
+  response.status(500).send("Internal server error")
+
+}
+}); 
 
 // // for post on new todo on browser
-app.post("/add-todo", (request, response) => {
+app.post("/add-todo", async(request, response) => {
   const addTodoObj = {
     todoContent: request.body.todo,
-    id: new Date().getTime(),
+    ip : request.ip
   };
-  todos.push(addTodoObj);
+  // todos.push(addTodoObj);
+  const res = await Todo.create(addTodoObj);
+  // todo add hona par yah message aye ga mean post perfect kam kar rha ha.
   response.send({ message: "todo added ho gya ha", data: addTodoObj });
 });
 
