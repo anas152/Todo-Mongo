@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const mongoDbUri =  "mongodb+srv://anas-main:anas-main99@cluster0.tjke4.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+const mongoDbUri =  "mongodb+srv://anas-main:anas-main99@cluster0.tjke4.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0"
 
 const connectDB = async () => {
     try {

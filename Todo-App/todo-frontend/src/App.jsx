@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export default function App() {
-  const BASE_URL = "https://todo-app-ten-pi-87.vercel.app";
+  const BASE_URL = "http://localhost:5001";
 
   const [todos, setTodos] = useState([]);
 
@@ -12,9 +12,10 @@ export default function App() {
       const res = await axios(`${BASE_URL}/all-todos`);
       setTodos(res?.data?.data);
     } catch (err) {
-      console.error(err?.response?.data?.message || "Error fetching todos");
-    }
-  };
+      console.error("Error details:", err); 
+      toast.dismiss()
+      toast.error(err?.response?.data?.message || "unknown errorrr");    }
+  };  
 
   useEffect(() => {
     getTodo();
@@ -34,8 +35,7 @@ export default function App() {
 
   //yah edit todo ka lia ha
   const editTodo = async (event, todoId) => {
-    console.log(editTodo);
-
+    // console.log(todoId);
     try {
       event.preventDefault();
 
@@ -88,7 +88,7 @@ export default function App() {
           <ul className="mt-6 space-y-4">
             {todos?.map((todo, index) => (
               <li
-                key={todo.id}
+                key={todo._id}
                 className="flex justify-between items-center p-4 bg-gray-50 rounded-md shadow-sm hover:bg-gray-100 transition-all duration-200"
               >
                 {/* yah input ka par ha jis par edit button sa alag ho rha ha edit par open ho rha ha */}
@@ -147,7 +147,7 @@ export default function App() {
                     {/* yah logic deltlet karni ki ha */}
                     {!todo.isEditing ? (
                       <button
-                        onClick={() => deleteTodo(todo.id)}
+                        onClick={() => deleteTodo(todo._id)}
                         className="text-red-600 hover:text-red-700 focus:outline-none"
                       >
                         Delete

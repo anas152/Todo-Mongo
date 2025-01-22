@@ -16,7 +16,7 @@ app.use(
 // yah api sa todo ko lena ka lia ha
 app.get("/all-todos", async (request, response) => {
   try {
-    const todos = await Todo.find(
+    const todos = await Todo.find(  
       {},
       { ip: 0, __v: 0, updatedAt: 0 } // 0, 1 is liya hota ha ka 0 sa  fronted par kuch bhi show nahi karta ha. or 1 sa show jo show karwana ho
       // {todoContent : 1, _id: 0 }  sirf id ki ko hum dono ka sath likh sakta ha 0, 1 ma baki koi bhi aik chez ko mangwa sakta ha.
