@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+  // import 'react-toastify/dist/ReactToastify.css';
 
 export default function App() {
   const BASE_URL = "http://localhost:5001";
@@ -11,6 +12,7 @@ export default function App() {
     try {
       const res = await axios(`${BASE_URL}/all-todos`);
       setTodos(res?.data?.data);
+      // toast.success("ansa");
     } catch (err) {
       console.error("Error details:", err); 
       toast.dismiss()
@@ -21,6 +23,7 @@ export default function App() {
     getTodo();
   }, []);
 
+  
   const addTodo = async (event) => {
     try {
       event.preventDefault();
@@ -28,10 +31,13 @@ export default function App() {
       await axios.post(`${BASE_URL}/add-todo`, { todo: todoValue });
       getTodo();
       event.target.reset();
+      toast.success('Todo Added Succesfully');
     } catch (err) {
       console.error(err?.response?.data?.message || "Error adding todo");
+      toast.error(err?.response?.data?.message || "unknown errorrr");
     }
   };
+  
 
   //yah edit todo ka lia ha
   const editTodo = async (event, todoId) => {
@@ -59,7 +65,9 @@ export default function App() {
       setTodos(todos.filter((todo) => todo.id !== todoId));
       // Call the backend to delete the todo
       await axios.delete(`${BASE_URL}/delete-solo-todo/${todoId}`);
-        getTodo();
+      getTodo();
+      // toast(res.data);
+
     } catch (err) {
       console.error(err?.response?.data?.message || "Deleting error");
       getTodo();
